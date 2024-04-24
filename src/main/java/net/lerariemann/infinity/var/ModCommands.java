@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import static net.minecraft.server.command.CommandManager.*;
 
@@ -57,13 +58,26 @@ public class ModCommands {
     public static RegistryKey<World> getKey(long d, MinecraftServer s) {
         return checkEnd(d, s) ? World.END : RegistryKey.of(RegistryKeys.WORLD, getIdentifier(d, s));
     }
+    public static boolean isNumeric(String str) {
+        return str.matches("\\d+(\\.\\d+)?");  //match a number with optional decimal.
+    }
 
     public static long getDimensionSeed(String text, MinecraftServer s) {
         return getDimensionSeed(text, ((MinecraftServerAccess)(s)).getDimensionProvider());
     }
+
     public static long getDimensionSeed(NbtCompound compound, MinecraftServer s) {
         NbtList pages = compound.getList("pages", NbtElement.STRING_TYPE);
-        return getDimensionSeed(pages.get(0).asString(), ((MinecraftServerAccess)(s)).getDimensionProvider());
+        String Seed = pages.get(0).asString();
+        if (pages.isEmpty()) {
+            return getDimensionSeed("empty", ((MinecraftServerAccess)(s)).getDimensionProvider());
+        }
+        else if (Seed.length() == 8 && isNumeric(Seed)) {
+            return Long.parseLong(Seed);
+        }
+        else {
+            return getDimensionSeed(Seed, ((MinecraftServerAccess)(s)).getDimensionProvider());
+        }
     }
 
     public static long getDimensionSeed(String text, RandomProvider prov) {

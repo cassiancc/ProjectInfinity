@@ -30,6 +30,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -41,6 +43,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -229,7 +232,8 @@ public class NeitherPortalBlock extends NetherPortalBlock implements BlockEntity
     static Map<Item, String> recipes = Map.ofEntries(
             Map.entry(Items.BOOKSHELF, "infinity:book_box"),
             Map.entry(Items.TNT, "infinity:timebomb"),
-            Map.entry(Items.LECTERN, "infinity:altar")
+            Map.entry(Items.LECTERN, "infinity:altar"),
+            Map.entry(Items.BOOK, "minecraft:written_book")
     );
 
     @Override
@@ -241,6 +245,16 @@ public class NeitherPortalBlock extends NetherPortalBlock implements BlockEntity
                 ItemEntity result = new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(),
                         new ItemStack(Registries.ITEM.get(new Identifier(recipes.get(itemStack.getItem())))).copyWithCount(itemStack.getCount()),
                         -v.x, -v.y, -v.z);
+                if (result.getStack().getItem() == Items.WRITTEN_BOOK) {
+                    ItemStack itemStack1 = result.getStack();
+                    NbtCompound compound = itemStack1.getOrCreateNbt();
+                    compound.putString("author", "§kcassiancc");
+                    NbtList lst = new NbtList();
+                    String seed = String.valueOf(((NeitherPortalBlockEntity)world.getBlockEntity(pos)).getDimension());
+                    lst.add(NbtString.of(seed));
+                    compound.put("pages", lst);
+                    compound.putString("title", "Retrieved Book");
+                }
                 world.spawnEntity(result);
                 entity.remove(Entity.RemovalReason.CHANGED_DIMENSION);
             }
