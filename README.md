@@ -1,4 +1,7 @@
 # Infinite Dimensions for Minecraft 1.20.1
+<a target='_blank' href="https://modrinth.com/mod/fabric-api"><img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg"></a>
+<a target='_blank' href="https://modrinth.com/mod/infinite-dimensions"><img alt="modrinth" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg"></a>
+<a target='_blank' href="https://github.com/LeraRiemann/ProjectInfinity"><img alt="github" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/available/github_vector.svg"></a>
 
 **Infinite Dimensions** is a Fabric mod that reworks and reimagines 20w14infinite - the April Fools' snapshot of 2020 - in modern versions of Minecraft.
 
