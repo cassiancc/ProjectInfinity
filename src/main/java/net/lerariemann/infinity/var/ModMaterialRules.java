@@ -17,6 +17,8 @@ import net.minecraft.util.dynamic.CodecHolder;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
+import java.io.File;
+
 public class ModMaterialRules {
     public record RandomBlockStateRule(WeighedStructure<NbtElement> w) implements MaterialRules.BlockStateRule
     {
@@ -36,7 +38,7 @@ public class ModMaterialRules {
     {
         INSTANCE;
         static final CodecHolder<RandomBlockMaterialRule> CODEC = CodecHolder.of(MapCodec.unit(INSTANCE));
-        static final RandomProvider PROVIDER = new RandomProvider("config/" + InfinityMod.MOD_ID + "/");
+        static final RandomProvider PROVIDER = new RandomProvider("config" + File.separator + InfinityMod.MOD_ID + File.separator);
 
         @Override
         public CodecHolder<? extends MaterialRules.MaterialRule> codec() {

@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -79,8 +80,8 @@ public class MinecraftServerMixin implements MinecraftServerAccess {
 
     @Override
     public void setDimensionProvider() {
-        dimensionProvider = new RandomProvider("config/" + InfinityMod.MOD_ID + "/",
-                getSavePath(WorldSavePath.DATAPACKS).toString() + "/" + InfinityMod.MOD_ID);
+        dimensionProvider = new RandomProvider("config/" + InfinityMod.MOD_ID + File.separator,
+                getSavePath(WorldSavePath.DATAPACKS).toString() + File.separator + InfinityMod.MOD_ID);
     }
 
     @Override

@@ -20,8 +20,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldView;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -200,8 +202,9 @@ public class ConfigGenerator {
         m.keySet().forEach(a -> {
             if (!m.get(a).keys.isEmpty()) {
                 try {
-                    Files.createDirectories(Paths.get("config/" + InfinityMod.MOD_ID + "/modular/" + a + "/" + addpath));
-                    CommonIO.write(wsToCompound(m.get(a)), "config/" + InfinityMod.MOD_ID + "/modular/" + a + "/" + addpath, name + ".json");
+                    String path = "config" + File.separator + InfinityMod.MOD_ID + File.separator + "modular" + File.separator + a + File.separator;
+                    Files.createDirectories(Paths.get(path + addpath));
+                    CommonIO.write(wsToCompound(m.get(a)), path, name + ".json");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,12 +33,12 @@ public class RandomLootDrops {
 
     static void gen(MinecraftServer s, Identifier dataFrom, Identifier nameFrom) throws IOException {
         JsonElement e = LootDataType.LOOT_TABLES.getGson().toJsonTree(s.getLootManager().getLootTable(dataFrom));
-        int i = nameFrom.getPath().lastIndexOf("/");
-        String before = i < 0 ? "" : "/" + nameFrom.getPath().substring(0, i);
+        int i = nameFrom.getPath().lastIndexOf(File.separator);
+        String before = i < 0 ? "" : File.separator + nameFrom.getPath().substring(0, i);
         String after = i < 0 ? nameFrom.getPath() : nameFrom.getPath().substring(i+1);
-        String directory = s.getSavePath(WorldSavePath.DATAPACKS).toString() + "/" + InfinityMod.MOD_ID +
-                "/data/" + nameFrom.getNamespace() + "/loot_tables" + before;
+        String directory = s.getSavePath(WorldSavePath.DATAPACKS).toString() + File.separator + InfinityMod.MOD_ID +
+                File.separator + "data" + File.separator + nameFrom.getNamespace() + File.separator + "loot_tables" + before;
         Files.createDirectories(Paths.get(directory));
-        Files.write(Paths.get(directory + "/" + after + ".json"), Collections.singletonList(e.toString()), StandardCharsets.UTF_8);
+        Files.write(Paths.get(directory + File.separator + after + ".json"), Collections.singletonList(e.toString()), StandardCharsets.UTF_8);
     }
 }

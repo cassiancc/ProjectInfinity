@@ -61,7 +61,7 @@ public class RandomProvider {
         register_category(registry, path, "mobs", CommonIO::weighedListReader);
         register_category(listRegistry, path, "lists", CommonIO::nbtListReader);
         register_category_hardcoded(configPath + "hardcoded");
-        noise = CommonIO.read(configPath + "util/noise.json");
+        noise = CommonIO.read(configPath + "util" + File.separator + "noise.json");
     }
 
     void read_root_config() {
@@ -86,7 +86,7 @@ public class RandomProvider {
     }
 
     public NbtCompound notRandomTree(String tree, String block) {
-        return CommonIO.readCarefully(configPath + "/util/placements/tree_vanilla.json", tree, block);
+        return CommonIO.readCarefully(configPath + " " + File.separator + "util " + File.separator + "placements " + File.separator + "tree_vanilla.json", tree, block);
     }
 
     void saveTrees() {
@@ -105,37 +105,39 @@ public class RandomProvider {
         NbtCompound c2 = new NbtCompound();
         c2.putString("type", "minecraft:random_selector");
         c2.put("config", c);
-        CommonIO.write(c2, savingPath + "/data/" + InfinityMod.MOD_ID + "/worldgen/configured_feature", "all_trees.json");
-        CommonIO.write(CommonIO.read(configPath + "util/all_trees.json"),
-                savingPath + "/data/" + InfinityMod.MOD_ID + "/worldgen/placed_feature", "all_trees.json");
+        String worldgenPath = savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "worldgen";
+        CommonIO.write(c2, worldgenPath + File.separator + "configured_feature", "all_trees.json");
+        CommonIO.write(CommonIO.read(configPath + "util" + File.separator + "all_trees.json"),
+                worldgenPath + File.separator + "placed_feature", "all_trees.json");
         CommonIO.write(CommonIO.read(configPath + "util/random_forest.json"),
-                savingPath + "/data/" + InfinityMod.MOD_ID + "/worldgen/biome", "random_forest.json");
+                worldgenPath + File.separator + "biome", "random_forest.json");
+
     }
 
     void genCorePack() {
         extraRegistry.get("palettes").keys.forEach(e -> {
-            if (!(Paths.get(savingPath + "/data/" + InfinityMod.MOD_ID + "/structures/"
+            if (!(Paths.get(savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "structures " + File.separator
                     + ((NbtCompound)e).getString("name") + ".nbt")).toFile().exists()) {
                 savePortalFromPalette((NbtCompound)e);
             }
         });
         saveTrees();
-        if (!(Paths.get(savingPath + "/pack.mcmeta")).toFile().exists()) savePackMcmeta();
+        if (!(Paths.get(savingPath + File.separator + "pack.mcmeta")).toFile().exists()) savePackMcmeta();
     }
 
     void savePortalFromPalette(NbtCompound rawdata) {
         String name = rawdata.getString("name");
-        NbtCompound datanbt = CommonIO.read(configPath + "util/portal/main.json");
+        NbtCompound datanbt = CommonIO.read(configPath + "util" + File.separator + "portal" + File.separator + "main.json");
         NbtCompound moredata = CommonIO.readCarefully(configPath +
-                        "util/portal/palette_" + (rawdata.getBoolean("properties") ? "wood" : "stone") + ".json",
+                        "util " + File.separator + "portal " + File.separator + "palette_" + (rawdata.getBoolean("properties") ? "wood" : "stone") + ".json",
                 rawdata.getString("plank"),
                 rawdata.getString("log"),
                 rawdata.getString("stair"),
                 rawdata.getString("stair"));
         datanbt.put("palette", moredata.get("palette"));
-        String path = savingPath + "/data/" + InfinityMod.MOD_ID + "/structures";
+        String path = savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "structures";
         Path dir = Paths.get(path);
-        Path file = Paths.get(path + "/" + name + ".nbt");
+        Path file = Paths.get(path + File.separator + name + ".nbt");
         List<String> lines = new ArrayList<>();
         try {
             Files.createDirectories(dir);
@@ -144,8 +146,8 @@ public class RandomProvider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        CommonIO.write(CommonIO.readCarefully(configPath + "util/portal/pool.json", name),
-                savingPath + "/data/" + InfinityMod.MOD_ID + "/worldgen/template_pool", name + ".json");
+        CommonIO.write(CommonIO.readCarefully(configPath + "util " + File.separator + "portal " + File.separator + "pool.json", name),
+                savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "worldgen" + File.separator + "template_pool", name + ".json");
     }
 
     void savePackMcmeta() {
@@ -207,10 +209,10 @@ public class RandomProvider {
 
     static <B> void register_category(Map<String, B> reg, String path, String subpath, ListReader<B> reader) {
         try {
-            walk(Paths.get(path + "/minecraft/" + subpath)).forEach(p -> {
+            walk(Paths.get(path + File.separator + "minecraft" + File.separator + subpath)).forEach(p -> {
                 String fullname = p.toString();
                 if (p.toFile().isFile()) {
-                    String name = fullname.substring(fullname.lastIndexOf("/") + 1, fullname.length() - 5);
+                    String name = fullname.substring(fullname.lastIndexOf(File.separator) + 1, fullname.length() - 5);
                     name = name.substring(name.lastIndexOf('\\') + 1);
                     int i = fullname.replace("minecraft_", "%%%").lastIndexOf("minecraft");
                     String sub = fullname.substring(i+10);
@@ -226,7 +228,7 @@ public class RandomProvider {
             walk(Paths.get(path)).forEach(p -> {
                 String fullname = p.toString();
                 if (fullname.endsWith(".json")) {
-                    String name = fullname.substring(fullname.lastIndexOf("/") + 1, fullname.length() - 5);
+                    String name = fullname.substring(fullname.lastIndexOf(File.separator) + 1, fullname.length() - 5);
                     name = name.substring(name.lastIndexOf('\\') + 1);
                     if (!Objects.equals(name, "none")) registry.put(name, CommonIO.weighedListReader(fullname));
                 }

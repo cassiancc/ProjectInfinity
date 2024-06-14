@@ -46,7 +46,7 @@ public class JsonGrabber<E> {
     void grab(Path path, boolean bl) {
         String path1 = path.toString();
         if (path1.endsWith(".json")) {
-            String fullname = path1.substring(path1.lastIndexOf("/") + 1, path1.length() - 5);
+            String fullname = path1.substring(path1.lastIndexOf(File.separator) + 1, path1.length() - 5);
             int i = fullname.lastIndexOf("\\");
             if (i>=0) fullname = fullname.substring(i + 1);
             RegistryKey<E> key = RegistryKey.of(registry.getKey(), InfinityMod.getId(fullname));
@@ -79,7 +79,7 @@ public class JsonGrabber<E> {
     }
 
     E grab_with_return(String rootdir, String i, boolean register) {
-        String path = rootdir + "/" + i + ".json";
+        String path = rootdir + File.separator + i + ".json";
         RegistryKey<E> key = RegistryKey.of(registry.getKey(), InfinityMod.getId("generated_"+i));
         File file = new File(path);
         String content;

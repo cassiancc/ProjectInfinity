@@ -5,6 +5,8 @@ import net.lerariemann.infinity.dimensions.RandomFeaturesList;
 import net.lerariemann.infinity.util.CommonIO;
 import net.minecraft.nbt.*;
 
+import java.io.File;
+
 public class RandomVegetation extends RandomisedFeature {
     boolean sparse;
 
@@ -30,8 +32,8 @@ public class RandomVegetation extends RandomisedFeature {
             tree = PROVIDER.randomName(random, "trees");
             NbtCompound c = PROVIDER.notRandomTree(tree, parent.surface_block.getString("Name"));
             String s = tree.substring(tree.lastIndexOf(':') + 1) + "_" + parent.parent.id;
-            s = s.replace("/", "_");
-            CommonIO.write(c, parent.storagePath + "/worldgen/placed_feature", s + ".json");
+            s = s.replace(File.separator, "_");
+            CommonIO.write(c, parent.storagePath + File.separator + "worldgen" + File.separator + "placed_feature", s + ".json");
             return NbtString.of(InfinityMod.MOD_ID + ":" + s);
         }
         else {

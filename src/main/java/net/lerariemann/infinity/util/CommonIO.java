@@ -30,7 +30,7 @@ public class CommonIO {
         String source = CompoundToString(base, 0);
         List<String> lines = Collections.singletonList(source);
         Path dir = Paths.get(path);
-        Path file = Paths.get(path+"/"+filename);
+        Path file = Paths.get(path+File.separator+filename);
         try {
             Files.createDirectories(dir);
             Files.write(file, lines, StandardCharsets.UTF_8);
@@ -144,9 +144,9 @@ public class CommonIO {
     public static NbtList nbtListReader(String path, String subpath) {
         NbtList res = new NbtList();
         for (File path1: Objects.requireNonNull((new File(path)).listFiles(File::isDirectory))) {
-            File readingthis = new File(path1.getPath() + "/" + subpath);
+            File readingthis = new File(path1.getPath() + File.separator + subpath);
             if (readingthis.exists()) {
-                NbtList add = read(path1.getPath() + "/" + subpath).getList("elements", NbtElement.STRING_TYPE);
+                NbtList add = read(path1.getPath() + File.separator + subpath).getList("elements", NbtElement.STRING_TYPE);
                 res.addAll(add);
             }
         }

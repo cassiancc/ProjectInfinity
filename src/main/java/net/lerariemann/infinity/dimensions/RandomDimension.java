@@ -12,6 +12,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -112,8 +113,8 @@ public class RandomDimension {
 
     void wrap_up(boolean bl) {
         (new RandomInfinityOptions(this, bl)).save();
-        CommonIO.write(data, getStoragePath() + "/dimension", name + ".json");
-        if (!(Paths.get(getRootPath() + "/pack.mcmeta")).toFile().exists()) CommonIO.write(packMcmeta(), getRootPath(), "pack.mcmeta");
+        CommonIO.write(data, getStoragePath() + " " + File.separator + "dimension", name + ".json");
+        if (!(Paths.get(getRootPath() + " " + File.separator + "pack.mcmeta")).toFile().exists()) CommonIO.write(packMcmeta(), getRootPath(), "pack.mcmeta");
     }
 
     String defaultblock(String s) {
@@ -149,10 +150,10 @@ public class RandomDimension {
     }
 
     void createDirectories() {
-        for (String s: new String[]{"dimension", "dimension_type", "worldgen/biome", "worldgen/configured_feature",
-                "worldgen/placed_feature", "worldgen/noise_settings", "worldgen/configured_carver", "worldgen/structure", "worldgen/structure_set"}) {
+        for (String s: new String[]{"dimension", "dimension_type", "worldgen"+ File.separator + "biome", "worldgen" + File.separator + "configured_feature",
+                "worldgen" + File.separator + "placed_feature", "worldgen" + File.separator + "noise_settings", "worldgen" + File.separator + "configured_carver", "worldgen" + File.separator + "structure", "worldgen" + File.separator + "structure_set"}) {
             try {
-                Files.createDirectories(Paths.get(getStoragePath() + "/" + s));
+                Files.createDirectories(Paths.get(getStoragePath() + File.separator + s));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -350,13 +351,13 @@ public class RandomDimension {
     }
 
     void writeTags(String rootPath) {
-        String path = rootPath + "/data/minecraft/tags/worldgen/structure";
+        String path = rootPath + File.separator + "data" + File.separator + "minecraft " + File.separator + "tags " + File.separator + "worldgen " + File.separator + "structure";
         try {
             Files.createDirectories(Paths.get(path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        NbtCompound dictionary = CommonIO.read(PROVIDER.configPath + "util/structure_tags.json");
+        NbtCompound dictionary = CommonIO.read(PROVIDER.configPath + "util " + File.separator + "structure_tags.json");
         Map<String, NbtList> tags = new HashMap<>();
         for (String s : structure_ids.keySet()) if (dictionary.contains(s)) {
             for (NbtElement e : (NbtList) Objects.requireNonNull(dictionary.get(s))) {
