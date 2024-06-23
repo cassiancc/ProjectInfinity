@@ -32,7 +32,7 @@ public class ConfigManager {
     public static void registerAllConfigs() {
         ModContainer modContainer = FabricLoader.getInstance().getModContainer(InfinityMod.MOD_ID).orElse(null);
         try {
-            Path path = Paths.get("config" + File.separator + InfinityMod.MOD_ID);
+            Path path = Paths.get(FabricLoader.getInstance().getConfigDir() + File.separator + InfinityMod.MOD_ID);
             if (!path.toFile().exists()) {
                 Files.createDirectories(path);
             }

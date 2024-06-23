@@ -1,6 +1,7 @@
 package net.lerariemann.infinity.var;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.loader.api.FabricLoader;
 import net.lerariemann.infinity.InfinityMod;
 import net.lerariemann.infinity.block.ModBlocks;
 import net.lerariemann.infinity.dimensions.RandomProvider;
@@ -38,7 +39,7 @@ public class ModMaterialRules {
     {
         INSTANCE;
         static final CodecHolder<RandomBlockMaterialRule> CODEC = CodecHolder.of(MapCodec.unit(INSTANCE));
-        static final RandomProvider PROVIDER = new RandomProvider("config" + File.separator + InfinityMod.MOD_ID + File.separator);
+        static final RandomProvider PROVIDER = new RandomProvider(FabricLoader.getInstance().getConfigDir() + File.separator + InfinityMod.MOD_ID + File.separator);
 
         @Override
         public CodecHolder<? extends MaterialRules.MaterialRule> codec() {
