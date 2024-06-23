@@ -146,7 +146,7 @@ public class RandomProvider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        CommonIO.write(CommonIO.readCarefully(configPath + "util " + File.separator + "portal " + File.separator + "pool.json", name),
+        CommonIO.write(CommonIO.readCarefully(configPath + "util" + File.separator + "portal" + File.separator + "pool.json", name),
                 savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "worldgen" + File.separator + "template_pool", name + ".json");
     }
 
