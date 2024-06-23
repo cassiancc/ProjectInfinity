@@ -1,5 +1,6 @@
 package net.lerariemann.infinity.util;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.lerariemann.infinity.InfinityMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -202,7 +203,7 @@ public class ConfigGenerator {
         m.keySet().forEach(a -> {
             if (!m.get(a).keys.isEmpty()) {
                 try {
-                    String path = "config" + File.separator + InfinityMod.MOD_ID + File.separator + "modular" + File.separator + a + File.separator;
+                    String path = FabricLoader.getInstance().getConfigDir() + File.separator + InfinityMod.MOD_ID + File.separator + "modular" + File.separator + a + File.separator;
                     Files.createDirectories(Paths.get(path + addpath));
                     CommonIO.write(wsToCompound(m.get(a)), path, name + ".json");
                 } catch (IOException e) {

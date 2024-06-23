@@ -86,7 +86,7 @@ public class RandomProvider {
     }
 
     public NbtCompound notRandomTree(String tree, String block) {
-        return CommonIO.readCarefully(configPath + " " + File.separator + "util " + File.separator + "placements " + File.separator + "tree_vanilla.json", tree, block);
+        return CommonIO.readCarefully(configPath + "util" + File.separator + "placements" + File.separator + "tree_vanilla.json", tree, block);
     }
 
     void saveTrees() {
@@ -116,7 +116,7 @@ public class RandomProvider {
 
     void genCorePack() {
         extraRegistry.get("palettes").keys.forEach(e -> {
-            if (!(Paths.get(savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "structures " + File.separator
+            if (!(Paths.get(savingPath + File.separator + "data" + File.separator + InfinityMod.MOD_ID + File.separator + "structures" + File.separator
                     + ((NbtCompound)e).getString("name") + ".nbt")).toFile().exists()) {
                 savePortalFromPalette((NbtCompound)e);
             }
@@ -129,7 +129,7 @@ public class RandomProvider {
         String name = rawdata.getString("name");
         NbtCompound datanbt = CommonIO.read(configPath + "util" + File.separator + "portal" + File.separator + "main.json");
         NbtCompound moredata = CommonIO.readCarefully(configPath +
-                        "util " + File.separator + "portal " + File.separator + "palette_" + (rawdata.getBoolean("properties") ? "wood" : "stone") + ".json",
+                        "util" + File.separator + "portal" + File.separator + "palette_" + (rawdata.getBoolean("properties") ? "wood" : "stone") + ".json",
                 rawdata.getString("plank"),
                 rawdata.getString("log"),
                 rawdata.getString("stair"),
